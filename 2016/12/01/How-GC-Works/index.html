@@ -6,14 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xtt129.github.io">
-  <title>xtt129的博客</title>
+  <title>GC的工作原理 | xtt129的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="xtt129的博客">
-<meta property="og:url" content="http://xtt129.github.io/index.html">
+  <meta name="description" content="谈到GC我们总是先谈到reference count, 然而reference count会存在两个问题：
+
+当有两个对象只引用对方的时候，这两个对象实际上是可以被回收的，但是reference count算法不会进行回收。
+随着回收的次数变多，内存会变的碎片化。
+
+为了解决上面的两个问题，人们引入了标记-清除(mark-sweep) 和 停止-复制(stop-copy)两种方法，在.NET中叫(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC的工作原理">
+<meta property="og:url" content="http://xtt129.github.io/2016/12/01/How-GC-Works/index.html">
 <meta property="og:site_name" content="xtt129的博客">
+<meta property="og:description" content="谈到GC我们总是先谈到reference count, 然而reference count会存在两个问题：
+
+当有两个对象只引用对方的时候，这两个对象实际上是可以被回收的，但是reference count算法不会进行回收。
+随着回收的次数变多，内存会变的碎片化。
+
+为了解决上面的两个问题，人们引入了标记-清除(mark-sweep) 和 停止-复制(stop-copy)两种方法，在.NET中叫(">
+<meta property="og:updated_time" content="2016-12-28T21:42:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="xtt129的博客">
+<meta name="twitter:title" content="GC的工作原理">
+<meta name="twitter:description" content="谈到GC我们总是先谈到reference count, 然而reference count会存在两个问题：
+
+当有两个对象只引用对方的时候，这两个对象实际上是可以被回收的，但是reference count算法不会进行回收。
+随着回收的次数变多，内存会变的碎片化。
+
+为了解决上面的两个问题，人们引入了标记-清除(mark-sweep) 和 停止-复制(stop-copy)两种方法，在.NET中叫(">
   
     <link rel="alternative" href="/atom.xml" title="xtt129的博客" type="application/atom+xml">
   
@@ -122,9 +141,7 @@
 </nav>
 
       <div class="body-wrap">
-        
-  
-    <article id="post-How-GC-Works" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-How-GC-Works" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -133,8 +150,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/01/How-GC-Works/">GC的工作原理</a>
+    <h1 class="article-title" itemprop="name">
+      GC的工作原理
     </h1>
   
 
@@ -185,193 +202,44 @@
   </div>
 </article>
 
-
-
-
-
-
-
-
-
-
   
-    <article id="post-Build-A-Blog-With-Hexo" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/15/Build-A-Blog-With-Hexo/">用Hexo搭建静态博客</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>无意间访问到<a href="https://www.staticgen.com/" target="_blank" rel="external">StaticGen</a>,是个开源静态内容生成工具的统计，包括github star数量, follower数量，branches数量等，比较了一下，选择了Hexo作为博客系统吧，一方面非常轻量，并且是用JS写的，实在有需要还可以自己改。</p>
-<p><a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> 用起来很方便，使用markdown进行编辑，支持从别的系统(如WordPress, Jekyll)或者RSS<a href="https://hexo.io/docs/migration.html" target="_blank" rel="external">migrate</a>的插件，并且可以直接<a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">deploy</a>到github page，很方便。</p>
-<p>常用命令：</p>
-<p>本地运行预览:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo server</div></pre></td></tr></table></figure></p>
-<p>生成静态文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo generate</div></pre></td></tr></table></figure></p>
-<p>发布(当然得先安装hexo-deployment-git插件以及配置):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
-<p>也可以直接运行:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo generate -deploy</div></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/15/Build-A-Blog-With-Hexo/" class="archive-article-date">
-  	<time datetime="2016-11-14T16:31:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Singleton-in-C-Sharp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/07/23/Singleton-in-C-Sharp/">C#中的Singleton实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一个好的Singleton应该是线程安全，支持懒加载的。以前经常写这样的Singleton:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">class Singleton</div><div class="line">&#123;</div><div class="line">    private static object lockObj = new object();</div><div class="line">    private static A instance = null;</div><div class="line">    private Singleton()</div><div class="line">    &#123;          </div><div class="line">        //init class Singleton here.</div><div class="line">    &#125;</div><div class="line">    public A Instance</div><div class="line">    &#123;</div><div class="line">          if (instance == null)</div><div class="line">          &#123;</div><div class="line">              lock(lockObj)</div><div class="line">              &#123;</div><div class="line">                   if (instance == null)</div><div class="line">                   &#123;</div><div class="line">                            instance = new Singleton();</div><div class="line">                   &#125;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          return instance;</div><div class="line">    &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p> 一直以为这样的写法是完美的写法，其实会有以下几个问题：</p>
-<ol>
-<li>首先尽管它是有效的，但并不符合ECMA CLI准则，依靠<a href="http://sstompkins.wordpress.com/2011/04/12/why-memory-barrier%EF%BC%9F/" target="_blank" rel="external">memory barrier</a>的支持。</li>
-<li>虽然这是c# Code，但可能有些人也会把他应用到Java中，在Java中，对象指针赋值可能已经在构造函数执行完成之前就进行了，这就会有问题</li>
-</ol>
-<p>事实上这个版本是强烈不被推荐的写法。</p>
-<p>第二版：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class Singleton</div><div class="line">&#123;</div><div class="line">    private static readonly Singleton instance = new Singleton();</div><div class="line">    private static Singleton()</div><div class="line">     &#123;</div><div class="line">     &#125;</div><div class="line">     private Singleton()</div><div class="line">     &#123;</div><div class="line">     &#125;</div><div class="line">     public static Singleton Instance</div><div class="line">     &#123;</div><div class="line">         get</div><div class="line">         &#123;</div><div class="line">                 return instance;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这里增加一个静态的构造方法，主要是告诉CLR，这个类型是<a href="http://csharpindepth.com/Articles/General/Beforefieldinit.aspx" target="_blank" rel="external">beforefieldinit</a>的，这个构造方法在同一个应用域下只会被执行一次，这就保证了线程安全，并且被触发的时机是：</p>
-<ol>
-<li>这个类的实例被创建。</li>
-<li>任何静态成员被引用了。</li>
-</ol>
-<p>由于这个性质，所以某些情况下，并不是完全懒加载的，比如在还没有调用这个Singleton方法之前引用了他别的静态成员，那么这个Singleton会由于被引用了静态成员而被创建。</p>
-<p>基于上面这个问题，我们就有了接下来的版本。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class Singleton</div><div class="line">&#123;</div><div class="line">     Singleton()</div><div class="line">     &#123;</div><div class="line">     &#125;</div><div class="line">     public static Singleton Instance</div><div class="line">     &#123;</div><div class="line">            return Nested.instance;</div><div class="line">     &#125;</div><div class="line">    private class Nested</div><div class="line">    &#123;</div><div class="line">         internal static readonly Singleton instance = new Singleton();</div><div class="line">         private static Nested()</div><div class="line">         &#123;</div><div class="line">         &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>通过这样，就保证了即使Singleton的静态成员被访问，也不会trigger它的构造函数，做到真正的lazy load.</p>
-<p>Reference: <a href="http://www.yoda.arachsys.com/csharp/singleton.html" target="_blank" rel="external">http://www.yoda.arachsys.com/csharp/singleton.html</a></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/07/23/Singleton-in-C-Sharp/" class="archive-article-date">
-  	<time datetime="2014-07-22T17:51:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-07-23</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-值类型-引用类型-in-C" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/06/24/值类型-引用类型-in-C/">值类型/引用类型 in C#</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在c#中，有两种类型，一种是ValueType，像int,double,以及struct; 一种是Reference Type, 如string,自定义类. </p>
-<p>像Struct这样的结构，它是被认为是ValueType的，也就是函数调用的时候，会拷贝出一个新的Struct传给函数，如果Struct中有自定义类型，则会拷贝该类型的引用。</p>
-<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class A</div><div class="line">&#123;</div><div class="line">    public int value;</div><div class="line">&#125;;</div><div class="line">public struct B</div><div class="line">&#123;</div><div class="line">    public int value;</div><div class="line">&#125;</div><div class="line">public static void SetValue(A p1, B p2)</div><div class="line">&#123;</div><div class="line">    p1.value = 1;</div><div class="line">    p2.value = 1;</div><div class="line">&#125;</div><div class="line">public static void Main()</div><div class="line">&#123;</div><div class="line">    A a = new A() &#123; value=0 &#125;;</div><div class="line">    B b = new B() &#123; value=0 &#125;;</div><div class="line">    Console.WriteLine(&quot;before:A:&#123;0&#125;,B:&#123;1&#125;&quot;, a.value, b.value);</div><div class="line">    SetValue(a, b);</div><div class="line">    Console.WriteLine(&quot;after:A:&#123;0&#125;,B:&#123;1&#125;&quot;, a.value, b.value);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>  上面代码运行的结果是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">before:A:0,B:0 </div><div class="line">after:A:1,B:0</div></pre></td></tr></table></figure></p>
-<p>   可以看到class作为参数传入函数中是只是作为一个引用地址，而struct则是复制了一份数据。</p>
-<p><a href="http://www.yoda.arachsys.com/java/passing.html" target="_blank" rel="external">Jon&rsquo;s Homepage</a> 给出了更好的解释，尽管是说java的</p>
-<p><strong>Truth 1: Everything in Java is passed by value. Objects, however, are never passed <em>at all</em>.</strong><br><strong>Truth 2: The values of variables are always primitives or references, never objects.</strong></p>
-<p>内存分配</p>
-<p>CLR把内存分配在两个结构中：堆和栈，当一个函数被调用的时候，CLR会将将调用方法相关的方法地址，参数push到栈中。当方法被执行完成时，栈顶元素会被pop出来，并且函数的传入参数，以及内部参数声明会被释放掉。</p>
-<p>而堆分配的内存可以被随时且任意的访问，堆需要依赖内存管理和垃圾回收。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public void Test()</div><div class="line">&#123;</div><div class="line">    A a = new A();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这里a是一个指向A的指针，这个指针占用的空间在栈中，而它指向的地址是在堆中。</p>
-<p>栈主要存以下两样东西</p>
-<p><strong>本地声明的对象指针，如a.</strong><br><strong>本地声明的值类型和函数参数.</strong></p>
-<p>堆则主要存</p>
-<p><strong>一个引用类型的内容，如果引用类型的内容还有引用的类型的话，那个引用指向的内容也是存在堆上的。</strong></p>
-<p>关键字 ref 和 out的区别</p>
-<p>而ref和out的区别就是使用了ref的指针必须是已经完成了值内存分配的，而out则没有这个要求。</p>
-<p>reference:</p>
-<p><a href="http://www.albahari.com/valuevsreftypes.aspx" target="_blank" rel="external">http://www.albahari.com/valuevsreftypes.aspx</a></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/06/24/值类型-引用类型-in-C/" class="archive-article-date">
-  	<time datetime="2014-06-23T20:29:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-06-24</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
+<nav id="article-nav">
   
   
+    <a href="/2016/11/15/Build-A-Blog-With-Hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用Hexo搭建静态博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
 
 
       </div>
@@ -393,8 +261,8 @@
 		fancybox: true,
 		mathjax: false,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
